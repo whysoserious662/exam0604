@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>四级题库列表（可翻页）</title>
+    <style>
+        * {margin: 20px; font-family: Arial;}
+        table {width: 95%; border-collapse: collapse;}
+        th,td {border:1px solid #ccc; padding: 8px; text-align: left;}
+        th {background: #f5f5f5;}
+        .page-box {margin-top: 20px;}
+        button {padding: 6px 12px; cursor: pointer;}
+    </style>
+</head>
+<body>
+    <h2>四级真题题库</h2>
+
+    <!-- 题目表格 -->
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>题型</th>
+                <th>题目内容</th>
+                <th>难度</th>
+            </tr>
+        </thead>
+        <tbody id="data-body"></tbody>
+    </table>
+
+
+<script>
+// 分页参数
+let page = 1;       // 当前页
+let size = 10;      // 每页10条
+let total = 0;      // 总题数
+let pages = 0;      // 总页数
+
+// 获取题库数据
+async function getList() {
+    try {
+        // 请求你的后端接口（完全不用改！）
+        let res = await fetch(`/api/question/list?page=${page}&size=${size}`);
+        let result = await res.json();
+        
+        total = result.total;
+        pages = result.pages;
+        
+        // 渲染表格
+        let tbody = document.getElementById('data-body');
+        tbody.innerHTML = '';
+        
+        result.data.forEach(item => {
+            let tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${item.id}</td>
+                <td>${item.type}</td>
+                <td>${item.content.substring(0, 80)}...</td>
+                <td>${item.difficulty}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+        
+        // 更新页码信息
+        document.getElementById('page-info').innerText = `第${page}页 / 共${pages}页`;
+    } catch (e) {
+        console.log("请求错误", e);
+    }
+}
+
+// 上一页
+function prevPage() {
+    if (page > 1) {
+        page--;
+        getList();
+    }
+}
+
+// 下一页
+function nextPage() {
+    if (page < pages) {
+        page++;
+        getList();
+    }
+}
+
+// 页面加载时自动获取数据
+window.onload = getList;
+</script>
+
+<!-- 翻页按钮 -->
+<div class="page-box" style="margin-top: 20px; text-align: center;">
+    <button id="prevBtn" onclick="prevPage()" disabled>上一页</button>
+    <span id="page-info">第1页 / 共0页</span>
+    <button id="nextBtn" onclick="nextPage()">下一页</button>
+</div>
+
+</body>
+</html>
