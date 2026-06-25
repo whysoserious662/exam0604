@@ -1,0 +1,54 @@
+# ── Python ──
+__pycache__/
+*.py[cod]
+*.pyo
+venv/
+*.egg-info/
+dist/
+build/
+*.egg
+
+# ── Environment ──
+.env
+.env.local
+.env.*.local
+
+# ── Node / Frontend ──
+node_modules/
+dist/
+.vite/
+
+# ── Database ──
+backup.sql
+*.db
+*.sqlite
+
+# ── Uploaded PDFs & Temp Data ──
+pdf_upload/
+pdf_uploads/
+pdf_temp/
+pdf_text/
+data/
+temp/
+upload_test/
+excel_templates/
+
+# ── Large Generated Files ──
+questions.json
+debug_chars.txt
+query
+
+# ── Claude ──
+.claude/
+
+# ── IDE / Editor ──
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# ── Misc ──
+*.log
+audio/
